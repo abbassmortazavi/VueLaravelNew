@@ -12,11 +12,11 @@
                     <v-card-title primary-title>
                     <h4>Login</h4>
                     </v-card-title>
-                    <v-form>
-                    <v-text-field name="Username" label="Username"></v-text-field>
-                    <v-text-field name="Password" label="Password" type="password"></v-text-field>
+                    <v-form ref="loginForm">
+                    <v-text-field name="email" label="email" v-model="loginUser.email"></v-text-field>
+                    <v-text-field name="Password" label="Password" type="password" v-model="loginUser.password"></v-text-field>
                     <v-card-actions>
-                    <v-btn primary large block>Login</v-btn>
+                    <v-btn primary large block @click="userLogin">Login</v-btn>
                     </v-card-actions>
                     </v-form>
                 </v-card>
@@ -26,3 +26,31 @@
         </v-container>
     </div>
 </template>
+<script>
+import Axios from 'axios';
+
+
+export default {
+    name: 'login',
+    data() {
+        return {
+            loginUser:{
+                email: '',
+                password: ''
+            }
+        }
+    },
+    methods: {
+        userLogin(){
+            Axios.post('http://localhost:8000/api/login' , this.loginUser)
+            .then((res)=>{
+                console.log(res);
+                this.$router.push('/home');
+            }).catch((error)=>{
+                console.log(error);
+            })
+            //console.log(this.loginUser);
+        }
+    },
+}
+</script>

@@ -39,7 +39,8 @@ class AuthController extends Controller
         ]);
         //dd($user);
         return response()->json([
-            'user'=> $user
+            'user'=> $user,
+            'success'=> 'ok'
         ]);
     }
 }

@@ -35,6 +35,7 @@
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
+      <v-btn elevation="2" @click="logout" v-if="isLoggedIn">Logout</v-btn>
     </v-app-bar>
 
     <v-main>
@@ -55,7 +56,19 @@ export default {
   },
 
   data: () => ({
-    //
+    isLoggedIn: false
   }),
+  created() {
+    if(localStorage.getItem('token')){
+      this.isLoggedIn = true;
+    }
+  },
+  methods: {
+    logout(){
+      localStorage.removeItem('token');
+      this.isLoggedIn = false;
+      this.$router.push('/login');
+    }
+  },
 };
 </script>

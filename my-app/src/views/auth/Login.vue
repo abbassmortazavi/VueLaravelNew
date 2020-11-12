@@ -45,7 +45,8 @@ export default {
             Axios.post('http://localhost:8000/api/login' , this.loginUser)
             .then((res)=>{
                 console.log(res);
-                this.$router.push('/home');
+                localStorage.setItem('token',res.data);
+               this.$router.push('/dashboard');
             }).catch((error)=>{
                 console.log(error);
             })

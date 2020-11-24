@@ -12,11 +12,11 @@
                     <v-card-title primary-title>
                     <h4>Login</h4>
                     </v-card-title>
-                    <v-form ref="loginForm">
+                    <v-form ref="loginForm" @submit.prevent="userLogin">
                     <v-text-field name="email" label="email" v-model="loginUser.email"></v-text-field>
                     <v-text-field name="Password" label="Password" type="password" v-model="loginUser.password"></v-text-field>
                     <v-card-actions>
-                    <v-btn primary large block @click="userLogin">Login</v-btn>
+                    <v-btn primary large block type="submit">Login</v-btn>
                     </v-card-actions>
                     </v-form>
                 </v-card>
@@ -27,9 +27,7 @@
     </div>
 </template>
 <script>
-import Axios from 'axios';
-
-
+import {mapActions} from 'vuex';
 export default {
     name: 'login',
     data() {
@@ -41,17 +39,19 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            login: 'user/userLogin'
+        }),
         userLogin(){
-            Axios.post('http://localhost:8000/api/login' , this.loginUser)
-            .then((res)=>{
-                console.log(res);
-                localStorage.setItem('token',res.data);
-               this.$router.push('/dashboard');
-            }).catch((error)=>{
-                console.log(error);
-            })
-            //console.log(this.loginUser);
+            this.login(this.loginUser)
+            // this.$store.dispatch('user/userLogin' , this.loginUser)
+            .then(()=>{
+                this.$router.push({name: 'dashboard'});
+            });
         }
+    },
+    created() {
+       // console.log(this.$store.state);
     },
 }
 </script>

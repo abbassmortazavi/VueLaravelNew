@@ -46,24 +46,6 @@ const router = new VueRouter({
     routes
 });
 
-
-
-router.beforeEach((to, from, next) => {
-   if (to.meta.middleware) {
-       const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware];
-       const ctx = {
-           from,
-           next,
-           router,
-           to
-       }
-       const nextMiddleware = nextCheck( ctx, middleware );
- 
-       return middleware[0]({ ...ctx, next: nextMiddleware });
-    }
-    return next(); 
-});
-
 function nextCheck(context, middleware, index) {
     
     const nextMiddleware = middleware[index];
@@ -77,5 +59,23 @@ function nextCheck(context, middleware, index) {
         nextMiddleware({ ...context, next: nextMidd });
     }
 }
+
+router.beforeEach((to, from, next) => {
+   if (to.meta.middleware) {
+       const middleware = Array.isArray(to.meta.middleware) ? to.meta.middleware : [to.meta.middleware];
+       const ctx = {
+           from,
+           next,
+           router,
+           to
+       }
+       const nextMiddleware = nextCheck( ctx, middleware , 1);
+ 
+       return middleware[0]({ ...ctx, next: nextMiddleware });
+    }
+    return next(); 
+});
+
+
 
 export default router;

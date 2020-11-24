@@ -35,7 +35,7 @@
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
-      <v-btn elevation="2" @click="logout" v-if="isLoggedIn">Logout</v-btn>
+      <v-btn elevation="2" @click="logout" v-if="loggedIn">Logout</v-btn>
     </v-app-bar>
 
     <v-main>
@@ -47,7 +47,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld';
-
+import {mapGetters,mapActions} from 'vuex';
 export default {
   name: 'App',
 
@@ -56,17 +56,30 @@ export default {
   },
 
   data: () => ({
-    isLoggedIn: false
+
   }),
   created() {
-    if(localStorage.getItem('token')){
-      this.isLoggedIn = true;
-    }
+    //if(localStorage.getItem('token')){
+      //this.isLoggedIn = true;
+    //}
+      this.checkUserState();
+  },
+  computed: {
+      ...mapGetters({
+          loggedIn: 'user/loggedIn'
+      }),
+    /*loggedIn(){
+      return this.$store.getters['user/loggedIn'];
+    }*/
   },
   methods: {
+      ...mapActions({
+          userLogout: 'user/userLogout',
+          checkUserState: 'user/setLoggedInState'
+      }),
     logout(){
-      localStorage.removeItem('token');
-      this.isLoggedIn = false;
+        this.userLogout();
+      // this.$store.dispatch('user/userLogout');
       this.$router.push('/login');
     }
   },

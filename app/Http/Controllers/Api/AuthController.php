@@ -25,8 +25,19 @@ class AuthController extends Controller
         ];
 
         $tokenRequest = Request::create('/oauth/token', 'post', $data);
-       // dd($tokenRequest->access_token);
-        return app()->handle($tokenRequest);
+        $tokenResponse = app()->handle($tokenRequest);
+        $contentString = $tokenResponse->content();
+        $tokenContent = json_decode($contentString , true);
+        //dd($tokenContent['access_token']);
+        if (!empty($tokenContent['access_token'] )){
+            return $tokenResponse;
+        }
+        return response()->json([
+            'message'=>'Wrong user or Pass!!!'
+        ]);
+
+
+        //return app()->handle($tokenRequest);
         
 
     }

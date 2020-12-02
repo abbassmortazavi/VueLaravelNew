@@ -14,7 +14,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $passportGrantClient = Client::where('password_client', '1')->first();
-
+        //dd($passportGrantClient);
         $data = [
             'grant_type' => 'password',
             'client_id' => $passportGrantClient->id,
@@ -38,7 +38,7 @@ class AuthController extends Controller
 
 
         //return app()->handle($tokenRequest);
-        
+
 
     }
     public function register(UserRegisterRequest $request)
